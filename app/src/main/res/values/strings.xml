@@ -1,0 +1,33 @@
+<resources>
+    <string name="app_name">Crypto Stock Viewer</string>
+    <string name="textHeader">Select Crypto Pairs</string>
+    <string name="btnGetPairs">Get Data</string>
+    <string name="graphString">Graphs</string>
+    <string name="btnShare">Share Data</string>
+    <string name="detailactivity">Detail Crypto Pair</string>
+    <string name="chooserTitle">Share with ...</string>
+    <string name="btnBack"><![CDATA[<Back]]></string>
+    <string name="backEditHint">back Edit text</string>
+    <string-array name="cryptoPairs">
+        <item>BTC/USD</item>
+        <item>BTC/LTC</item>
+        <item>BTC/ETH</item>
+        <item>LTC/USD</item>
+        <item>LTC/BTC</item>
+        <item>LTC/ETH</item>
+        <item>ETH/USD</item>
+        <item>ETH/BTC</item>
+        <item>ETH/LTC</item>
+    </string-array>
+    <string-array name="cryptoData">
+        <item>6483.43</item>
+        <item>0.00234</item>
+        <item>0.01323</item>
+        <item>68.32</item>
+        <item>0.00412</item>
+        <item>0.01234</item>
+        <item>342.23</item>
+        <item>0.02123</item>
+        <item>0.00323</item>
+    </string-array>
+</resources>

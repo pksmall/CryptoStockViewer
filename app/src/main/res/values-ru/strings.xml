@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Просмотр пар крипто валют</string>
+    <string name="textHeader">Выберите пару из списка</string>
+    <string name="btnGetPairs">Получить данные</string>
+    <string name="graphString">График</string>
+    <string name="btnShare">Поделиться</string>
+    <string name="detailactivity">Детальная инфа о паре</string>
+    <string name="chooserTitle">Расшарить с помошью ...</string>
+    <string name="btnBack"><![CDATA[<Назад]]></string>
+    <string name="backEditHint">возвращеная строка</string>
+    <string-array name="cryptoPairs">
+        <item>BTC/USD</item>
+        <item>BTC/LTC</item>
+        <item>BTC/ETH</item>
+        <item>LTC/USD</item>
+        <item>LTC/BTC</item>
+        <item>LTC/ETH</item>
+        <item>ETH/USD</item>
+        <item>ETH/BTC</item>
+        <item>ETH/LTC</item>
+    </string-array>
+</resources>
