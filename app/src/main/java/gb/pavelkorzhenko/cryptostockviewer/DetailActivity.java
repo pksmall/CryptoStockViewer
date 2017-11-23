@@ -27,6 +27,7 @@ public class DetailActivity extends AppCompatActivity implements IConstants{
     protected Button btnBack;
     protected String cryptodata;
     protected String cryptopair;
+    protected boolean[] chkKeyArr;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,14 +37,14 @@ public class DetailActivity extends AppCompatActivity implements IConstants{
         Intent getMainData = getIntent();
         cryptodata = getMainData.getStringExtra(CRYPTODATA);
         cryptopair = getMainData.getStringExtra(CRYPTOPAIR);
-
         if (savedInstanceState != null) {
             cryptodata = savedInstanceState.getString(KEY_SAVE_CRYPTO_STRING_DATA);
             cryptopair = savedInstanceState.getString(KEY_SAVE_CRYPTO_PAIR);
         }
-
+        chkKeyArr = getMainData.getBooleanArrayExtra(CHECKBOXARRAY);
 
         Log.d("DETAIMYLACTIVITY","cryptodata: " + cryptodata + " cryptopair: " + cryptopair);
+        Log.d("DETAIMYLACTIVITY","checkboxes keys: " + chkKeyArr[0] + " " + chkKeyArr[1] + " " + chkKeyArr[2]);
 
         // show result textView
         textViewPair = findViewById(R.id.textCurrenPair);
@@ -54,11 +55,19 @@ public class DetailActivity extends AppCompatActivity implements IConstants{
 
         // button share
         btnShare = findViewById(R.id.btnShare);
-        btnShare.setOnClickListener(btnShareListener);
+        if (chkKeyArr[1]) {
+            btnShare.setVisibility(View.GONE);
+        } else {
+            btnShare.setOnClickListener(btnShareListener);
+        }
 
         // button back
         btnBack = findViewById(R.id.btnBack);
-        btnBack.setOnClickListener(btnBackListener);
+        if (chkKeyArr[2]) {
+            btnBack.setVisibility(View.GONE);
+        } else {
+            btnBack.setOnClickListener(btnBackListener);
+        }
 
         // imageView and graph drawable
         GraphView graph = findViewById(R.id.imgGraphID);
@@ -69,7 +78,11 @@ public class DetailActivity extends AppCompatActivity implements IConstants{
                 new DataPoint(3, 2),
                 new DataPoint(4, 6)
         });
-        graph.addSeries(series);
+        if (chkKeyArr[0]) {
+            graph.setVisibility(View.GONE);
+        } else {
+            graph.addSeries(series);
+        }
     }
 
     OnClickListener btnShareListener = new OnClickListener() {

@@ -8,6 +8,10 @@
     <string name="chooserTitle">Share with ...</string>
     <string name="btnBack"><![CDATA[<Back]]></string>
     <string name="backEditHint">back Edit text</string>
+    <string name="hdrCheckBoxes">Change Data Content</string>
+    <string name="noGraphStr">No Graph</string>
+    <string name="noShareStr">No share</string>
+    <string name="noBackStr">No Back</string>
     <string-array name="cryptoPairs">
         <item>BTC/USD</item>
         <item>BTC/LTC</item>

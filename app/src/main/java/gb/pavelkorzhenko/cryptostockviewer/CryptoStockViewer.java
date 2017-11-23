@@ -16,18 +16,22 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
 
-public class CryptoStockViewer extends AppCompatActivity implements View.OnClickListener,Spinner.OnItemSelectedListener,IConstants {
+public class CryptoStockViewer extends AppCompatActivity implements OnClickListener,Spinner.OnItemSelectedListener, IConstants {
     protected Spinner spinnerViewPairs;
     protected Button btnGetPairsData;
     protected Resources cryptoResData;
     protected String[] strCryptoPairData;
     protected Intent detailIntent;
     protected EditText backEditText;
+    protected CheckBox chkNoGraph, chkNoShare, chkNoBack;
+    protected boolean[] chkKeysArr = {false, false, false};
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
@@ -45,7 +49,15 @@ public class CryptoStockViewer extends AppCompatActivity implements View.OnClick
         // spinner and listener
         spinnerViewPairs= findViewById(R.id.spinnerPairChoose);
         spinnerViewPairs.setOnItemSelectedListener(this);
+
+        // checkboxes
+        chkNoGraph = findViewById(R.id.chkNoGraph);
+        chkNoShare = findViewById(R.id.chkNoShare);
+        chkNoBack = findViewById(R.id.chkNoBack);
+
+        // loading setting
         LoadPreferences();
+
 
         // button and listener
         btnGetPairsData = findViewById(R.id.getBtnPairs);
@@ -69,12 +81,22 @@ public class CryptoStockViewer extends AppCompatActivity implements View.OnClick
     public void onClick(View view) {
         long cryptoPairsID = spinnerViewPairs.getSelectedItemId();
         int cryptoIndex = (int) (cryptoPairsID % strCryptoPairData.length);
+        if (chkNoGraph.isChecked()) { chkKeysArr[0] = true; } else { chkKeysArr[0] = false; }
+        if (chkNoShare.isChecked()) { chkKeysArr[1] = true; } else { chkKeysArr[1] = false; }
+        if (chkNoBack.isChecked()) {  chkKeysArr[2] = true; } else { chkKeysArr[2] = false; }
         // save preferences
         SavePreferences(KEY_SPINNER_INDEX, (int) cryptoPairsID);
+        SavePreferences(KEY_CHK_NOGRAPH, chkKeysArr[0] ? 1 : 0);
+        SavePreferences(KEY_CHK_NOSHARE, chkKeysArr[1] ? 1 : 0);
+        SavePreferences(KEY_CHK_NOBACK,  chkKeysArr[2] ? 1 : 0);
+
+        Log.d("MAINMYLACTIVITY","chkbox keys: "  + chkKeysArr[0] + " " + chkKeysArr[1] + " " + chkKeysArr[2]);
 
         detailIntent = new Intent(CryptoStockViewer.this, DetailActivity.class);
         detailIntent.putExtra(CRYPTODATA, strCryptoPairData[cryptoIndex]);
         detailIntent.putExtra(CRYPTOPAIR, spinnerViewPairs.getSelectedItem().toString());
+        detailIntent.putExtra(CHECKBOXARRAY, chkKeysArr);
+
         Log.d("MAINMYACTIVITY","cryptodata: " + strCryptoPairData[cryptoIndex] + " cryptopair:"
                     + spinnerViewPairs.getSelectedItem().toString());
         startActivityForResult(detailIntent, guardCode);
@@ -86,12 +108,23 @@ public class CryptoStockViewer extends AppCompatActivity implements View.OnClick
         long cryptoPairsID = l;
         // id of element of arrayData % arrayData.length
         int cryptoIndex = (int) (cryptoPairsID % strCryptoPairData.length);
+        // check checkboxes
+        if (chkNoGraph.isChecked()) { chkKeysArr[0] = true; } else { chkKeysArr[0] = false; }
+        if (chkNoShare.isChecked()) { chkKeysArr[1] = true; } else { chkKeysArr[1] = false; }
+        if (chkNoBack.isChecked()) {  chkKeysArr[2] = true; } else { chkKeysArr[2] = false; }
         // save preferences
         SavePreferences(KEY_SPINNER_INDEX, (int) cryptoPairsID);
+        SavePreferences(KEY_CHK_NOGRAPH, chkKeysArr[0] ? 1 : 0);
+        SavePreferences(KEY_CHK_NOSHARE, chkKeysArr[1] ? 1 : 0);
+        SavePreferences(KEY_CHK_NOBACK,  chkKeysArr[2] ? 1 : 0);
+
+        Log.d("MAINMYLACTIVITY","chkbox keys: "  + chkKeysArr[0] + " " + chkKeysArr[1] + " " + chkKeysArr[2]);
 
         detailIntent = new Intent(CryptoStockViewer.this, DetailActivity.class);
         detailIntent.putExtra(CRYPTODATA, strCryptoPairData[cryptoIndex]);
         detailIntent.putExtra(CRYPTOPAIR, spinnerViewPairs.getSelectedItem().toString());
+        detailIntent.putExtra(CHECKBOXARRAY, chkKeysArr);
+
         Log.d("MAINMYACTIVITY","cryptodata: " + strCryptoPairData[cryptoIndex] + " cryptopair:"
                 + spinnerViewPairs.getSelectedItem().toString());
         startActivityForResult(detailIntent, guardCode);
@@ -128,8 +161,20 @@ public class CryptoStockViewer extends AppCompatActivity implements View.OnClick
     private void LoadPreferences() {
         SharedPreferences sharedPreferences = getSharedPreferences(
                 APP_PREFERENCES, MODE_PRIVATE);
+        // spinner
         int savedSpinnerID = sharedPreferences.getInt(KEY_SPINNER_INDEX, 0);
         spinnerViewPairs.setSelection(savedSpinnerID);
+
+        // load preferences for checkboxes
+        if (sharedPreferences.getInt(KEY_CHK_NOGRAPH, 0) == 1) {
+            chkNoGraph.setChecked(true);
+        }
+        if (sharedPreferences.getInt(KEY_CHK_NOSHARE, 0) == 1) {
+            chkNoShare.setChecked(true);
+        }
+        if (sharedPreferences.getInt(KEY_CHK_NOBACK, 0) == 1) {
+            chkNoBack.setChecked(true);
+        }
     }
 
     /**
