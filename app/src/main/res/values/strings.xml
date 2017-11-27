@@ -12,6 +12,9 @@
     <string name="noGraphStr">No Graph</string>
     <string name="noShareStr">No share</string>
     <string name="noBackStr">No Back</string>
+    <string name="hintTextPairs">Text Pairs</string>
+    <string name="imgListCPLeft">crypto image Left</string>
+    <string name="imgListCPRighth">crypto image Right</string>
     <string-array name="cryptoPairs">
         <item>BTC/USD</item>
         <item>BTC/LTC</item>

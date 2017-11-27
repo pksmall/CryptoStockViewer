@@ -24,19 +24,18 @@
             android:text="@string/textHeader"
             android:textAlignment="center"
             android:textSize="18sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            tools:text="textHeader" />
 
-        <Spinner
-            android:id="@+id/spinnerPairChoose"
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycleListView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:entries="@array/cryptoPairs" />
+            android:layout_height="260dp"
+            android:scrollbars="vertical"
+            android:layout_gravity="center_horizontal"
+            android:scrollbarAlwaysDrawHorizontalTrack="true">
 
-        <Button
-            android:id="@+id/getBtnPairs"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/btnGetPairs" />
+        </android.support.v7.widget.RecyclerView>
 
         <EditText
             android:id="@+id/backEditText"
