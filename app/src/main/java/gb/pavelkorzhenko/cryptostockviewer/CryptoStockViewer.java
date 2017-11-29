@@ -181,6 +181,7 @@ public class CryptoStockViewer extends AppCompatActivity implements IConstants {
             detailIntent.putExtra(CRYPTODATA, cryptoData.getCurrentExachage().toString());
             detailIntent.putExtra(CRYPTOPAIR, cryptoData.getName());
             detailIntent.putExtra(CHECKBOXARRAY, chkKeysArr);
+            detailIntent.putExtra(CRYPTOPAISID, cryptoPairsID);
             startActivityForResult(detailIntent, guardCode);
         }
     }

@@ -14,13 +14,11 @@ import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 
 public class DetailActivity extends AppCompatActivity implements IConstants{
-    protected TextView textViewData;
-    protected TextView textViewPair;
-    protected Button btnShare;
     protected Button btnBack;
     protected String cryptodata;
     protected String cryptopair;
     protected boolean[] chkKeyArr;
+    protected long cryptoPairsId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,24 +35,11 @@ public class DetailActivity extends AppCompatActivity implements IConstants{
             cryptopair = savedInstanceState.getString(KEY_SAVE_CRYPTO_PAIR);
         }
         chkKeyArr = getMainData.getBooleanArrayExtra(CHECKBOXARRAY);
+        cryptoPairsId = getMainData.getLongExtra(CRYPTOPAISID, 0);
 
         Log.d("DETAIMYLACTIVITY","cryptodata: " + cryptodata + " cryptopair: " + cryptopair);
         Log.d("DETAIMYLACTIVITY","checkboxes keys: " + chkKeyArr[0] + " " + chkKeyArr[1] + " " + chkKeyArr[2]);
-
-        // show result textView
-        textViewPair = findViewById(R.id.textCurrenPair);
-        textViewPair.setText(cryptopair);
-        // show result textView
-        textViewData = findViewById(R.id.textCurrentEx);
-        textViewData.setText(cryptodata);
-
-        // button share
-        btnShare = findViewById(R.id.btnShare);
-        if (chkKeyArr[1]) {
-            btnShare.setVisibility(View.GONE);
-        } else {
-            btnShare.setOnClickListener(btnShareListener);
-        }
+        cryptoDetailFrag.setCryptoPairId(cryptoPairsId, chkKeyArr);
 
         // button back
         btnBack = findViewById(R.id.btnBack);
@@ -63,40 +48,7 @@ public class DetailActivity extends AppCompatActivity implements IConstants{
         } else {
             btnBack.setOnClickListener(btnBackListener);
         }
-
-        // imageView and graph drawable
-        GraphView graph = findViewById(R.id.imgGraphID);
-        LineGraphSeries<DataPoint> series = new LineGraphSeries<>(new DataPoint[] {
-                new DataPoint(0, 1),
-                new DataPoint(1, 5),
-                new DataPoint(2, 3),
-                new DataPoint(3, 2),
-                new DataPoint(4, 6)
-        });
-        if (chkKeyArr[0]) {
-            graph.setVisibility(View.GONE);
-        } else {
-            graph.addSeries(series);
-        }
     }
-
-    OnClickListener btnShareListener = new OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            Intent sendShare = new Intent(Intent.ACTION_SEND);
-            sendShare.setType("multipart/form-data");
-            String sendString = "Pair: " + cryptopair + " = " + cryptodata;
-            sendShare.putExtra(sendShare.EXTRA_TEXT, sendString);
-            Log.d("DETEALACTIVITY", "sendString: " + sendString);
-            String chooserTitle = getString(R.string.chooserTitle);
-            Intent chosenIntent = Intent.createChooser(sendShare, chooserTitle);
-            try {
-                startActivity(chosenIntent);
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
-        }
-    };
 
     private void btnBackHandler() {
         Intent backIntent=new Intent();
@@ -126,6 +78,7 @@ public class DetailActivity extends AppCompatActivity implements IConstants{
         outState.putString(KEY_SAVE_CRYPTO_STRING_DATA, cryptodata);
         super.onSaveInstanceState(outState);
     }
+
     /**
      * Override states
      */
