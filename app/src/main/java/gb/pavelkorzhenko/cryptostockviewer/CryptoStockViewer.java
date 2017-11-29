@@ -1,15 +1,7 @@
 package gb.pavelkorzhenko.cryptostockviewer;
 
-/**
- * @done 1. Изменить приложение таким образом, чтобы при возврате из второй Activity в первую мы получали
- * @done    результат. Какой результат и куда его выводить — решите самостоятельно. Цель: научиться не только
- * @done    передавать данные через Intent, но и получать какой-то результат;
- * @see  line 99
- */
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.Resources;
-import android.media.Image;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
@@ -26,12 +18,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 public class CryptoStockViewer extends AppCompatActivity implements IConstants {
-    protected Resources cryptoResData;
     protected String[] strCryptoPairData;
     protected Intent detailIntent;
     protected EditText backEditText;
     protected CheckBox chkNoGraph, chkNoShare, chkNoBack;
     protected boolean[] chkKeysArr = {false, false, false};
+    protected View fragmentDetail;
+    protected long cryptoPairsId;
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
@@ -42,9 +35,6 @@ public class CryptoStockViewer extends AppCompatActivity implements IConstants {
         if (savedInstanceState != null) {
             strCryptoPairData = savedInstanceState.getStringArray(KEY_SAVE_CRYPTO_PAIR_DATA);
         }
-        // crypto pairs data array
-        cryptoResData = getResources();
-        strCryptoPairData = cryptoResData.getStringArray(R.array.cryptoData);
 
         // checkboxes
         chkNoGraph = findViewById(R.id.chkNoGraph);
@@ -53,6 +43,15 @@ public class CryptoStockViewer extends AppCompatActivity implements IConstants {
 
         // loading setting
         LoadPreferences();
+
+        CryptoViewFragment cryptoViewFrag = (CryptoViewFragment) getSupportFragmentManager().findFragmentById(R.id.cryptoViewFragmentId);
+
+        fragmentDetail = findViewById(R.id.cryptoFrameLayoutId);
+        if (fragmentDetail != null) {
+            viewDetailFragment(cryptoPairsId, chkKeysArr);
+            chkNoGraph.setOnClickListener(chkNoGraphListener);
+            chkNoShare.setOnClickListener(chkNoShareListener);
+        }
 
         RecyclerView recyclerView = findViewById(R.id.recycleListView);
 
@@ -91,7 +90,12 @@ public class CryptoStockViewer extends AppCompatActivity implements IConstants {
 
         void bind(int position) {
             Log.d("MAINMYACTIVITY","PairsViewHolder bind");
-            String strCryptoPair =  CryptoPair.cryptopairs[position].getName();
+            String strCryptoPair;
+            if (fragmentDetail != null) {
+                strCryptoPair = CryptoPair.cryptopairs[position].getShortname();
+                } else {
+                strCryptoPair = CryptoPair.cryptopairs[position].getName();
+            }
             int imgLeftId = CryptoPair.cryptopairs[position].getImgResIdLeft();
             int imgRightId = CryptoPair.cryptopairs[position].getImgResIdRight();
             txtCryptoPair.setText(strCryptoPair);
@@ -131,23 +135,28 @@ public class CryptoStockViewer extends AppCompatActivity implements IConstants {
         super.onSaveInstanceState(outState);
     }
 
-/*    @Override
-    public void onClick(View view) {
-        long l = 0;
-        doItNewIntent(l);
-    }
+    View.OnClickListener chkNoGraphListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            doItNewIntent(cryptoPairsId);
+        }
+    };
 
-    @Override
-    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-        doItNewIntent(l);
-    } */
+    View.OnClickListener chkNoShareListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            doItNewIntent(cryptoPairsId);
+        }
+    };
 
     // do It new Activity
     void doItNewIntent(long position) {
         // l = id of element , i = position
         long cryptoPairsID = position;
         // id of element of arrayData % arrayData.length
-        int cryptoIndex = (int) (cryptoPairsID % strCryptoPairData.length);
+        int cryptoIndex = (int) (cryptoPairsID % CryptoPair.cryptopairs.length);
+        CryptoPair cryptoData = CryptoPair.cryptopairs[cryptoIndex];
+
         // check checkboxes
         if (chkNoGraph.isChecked()) { chkKeysArr[0] = true; } else { chkKeysArr[0] = false; }
         if (chkNoShare.isChecked()) { chkKeysArr[1] = true; } else { chkKeysArr[1] = false; }
@@ -159,15 +168,30 @@ public class CryptoStockViewer extends AppCompatActivity implements IConstants {
         SavePreferences(KEY_CHK_NOBACK,  chkKeysArr[2] ? 1 : 0);
 
         Log.d("MAINMYLACTIVITY","chkbox keys: "  + chkKeysArr[0] + " " + chkKeysArr[1] + " " + chkKeysArr[2]);
+        Log.d("MAINMYACTIVITY","cryptodata: " + cryptoData.getCurrentExachage() + " cryptopair:"
+                + cryptoData.getName());
 
-        detailIntent = new Intent(CryptoStockViewer.this, DetailActivity.class);
-        detailIntent.putExtra(CRYPTODATA, CryptoPair.cryptopairs[cryptoIndex].getCurrentExachage().toString());
-        detailIntent.putExtra(CRYPTOPAIR, CryptoPair.cryptopairs[cryptoIndex].getName());
-        detailIntent.putExtra(CHECKBOXARRAY, chkKeysArr);
+        if (fragmentDetail != null ) {
+            viewDetailFragment(cryptoIndex, chkKeysArr);
+            String backString= "Pair: " + cryptoData.getName() +
+                    " = " + cryptoData.getCurrentExachage().toString();
+            backEditText.setText(backString);
+        } else {
+            detailIntent = new Intent(CryptoStockViewer.this, DetailActivity.class);
+            detailIntent.putExtra(CRYPTODATA, cryptoData.getCurrentExachage().toString());
+            detailIntent.putExtra(CRYPTOPAIR, cryptoData.getName());
+            detailIntent.putExtra(CHECKBOXARRAY, chkKeysArr);
+            startActivityForResult(detailIntent, guardCode);
+        }
+    }
 
-        Log.d("MAINMYACTIVITY","cryptodata: " + strCryptoPairData[cryptoIndex] + " cryptopair:"
-                + "");
-        startActivityForResult(detailIntent, guardCode);
+    void viewDetailFragment(long cryptoId, boolean[] chkKeysArr) {
+        CryptoDetailFragment detailFragment = new CryptoDetailFragment();
+        android.support.v4.app.FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        detailFragment.setCryptoPairId(cryptoId, chkKeysArr);
+        ft.replace(R.id.cryptoFrameLayoutId, detailFragment);
+        ft.setTransition(android.support.v4.app.FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+        ft.commit();
     }
 
     // @done TODO
@@ -196,6 +220,8 @@ public class CryptoStockViewer extends AppCompatActivity implements IConstants {
         SharedPreferences sharedPreferences = getSharedPreferences(
                 APP_PREFERENCES, MODE_PRIVATE);
 
+        // get pairs ID
+        cryptoPairsId = sharedPreferences.getInt(KEY_SPINNER_INDEX, 0);
         // load preferences for checkboxes
         if (sharedPreferences.getInt(KEY_CHK_NOGRAPH, 0) == 1) {
             chkNoGraph.setChecked(true);
@@ -219,6 +245,7 @@ public class CryptoStockViewer extends AppCompatActivity implements IConstants {
     @Override
     protected void onStart() {
         super.onStart();
+
         Log.d("MAINMYACTIVITY", "Main onStart()");
     }
     @Override

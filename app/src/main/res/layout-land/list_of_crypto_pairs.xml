@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<GridLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:textAlignment="center"
+    android:layout_gravity="center_horizontal"
+    android:columnCount="3"
+    android:rowCount="1">
+
+    <ImageView
+        android:id="@+id/imageLeft"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_column="0"
+        android:layout_row="0"
+        android:contentDescription="@string/imgListCPLeft"
+        app:srcCompat="@mipmap/btc" />
+    <Space />
+
+    <TextView
+        android:id="@+id/txtCryptoPair"
+        android:layout_width="140sp"
+        android:layout_height="match_parent"
+        android:layout_column="1"
+        android:layout_gravity="center_vertical"
+        android:layout_row="0"
+        android:hint="@string/hintTextPairs"
+        android:textAlignment="center"
+        android:textSize="14sp" />
+    <Space />
+    <ImageView
+        android:id="@+id/imageRight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_column="2"
+        android:layout_row="0"
+        android:contentDescription="@string/imgListCPRighth"
+        app:srcCompat="@mipmap/btc" />
+
+</GridLayout>

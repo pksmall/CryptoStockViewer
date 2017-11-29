@@ -16,6 +16,7 @@ public interface IConstants {
     public static final String KEY_CHK_NOSHARE = "SAVE_CHK_SHARE";
     public static final String KEY_CHK_NOBACK = "SAVE_CHK_BACK";
     public static final String CHECKBOXARRAY = "CHECKBOXES_ARRAY";
+    public static final String KEY_SAVE_CRYPTO_PAIR_ID = "SAVE_CRYPTO_PAIR_ID";
     public static final int guardCode = 4352;
     public static final String BACKINFO = "BACKINFO";
 }

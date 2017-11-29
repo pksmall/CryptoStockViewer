@@ -6,13 +6,15 @@ package gb.pavelkorzhenko.cryptostockviewer;
 
 public class CryptoPair {
     private String name;
+    private String shortname;
     private String description;
     private Double currentExachage;
     private int imgResIdLeft;
     private int imgResIdRight;
 
-    private CryptoPair(String name, String description, Double currentExachage, int imageLeft, int imageRight) {
+    private CryptoPair(String name, String shortname, String description, Double currentExachage, int imageLeft, int imageRight) {
         this.name = name;
+        this.shortname = shortname;
         this.description = description;
         this.currentExachage = currentExachage;
         this.imgResIdLeft = imageLeft;
@@ -22,47 +24,56 @@ public class CryptoPair {
     static final CryptoPair[] cryptopairs = {
 
             new CryptoPair("bitcoin / litcoin",
+                    "btc/ltc",
                     "bitcoin to litecoin.",
                     0.0345,
                     R.mipmap.btc,
                     R.mipmap.ltc),
             new CryptoPair("bitcoin / usd",
+                    "btc/usd",
                     "bitcoin to United States dollars.",
                     8123.02,
                     R.mipmap.btc,
                     R.mipmap.usd),
             new CryptoPair("bitcoin / etharium",
+                    "btc/eth",
                     "bitcoin to etharium",
                     0.0234,
                     R.mipmap.btc,
                     R.mipmap.eth),
             new CryptoPair("litcoin / bitcoin",
+                    "ltc/btc",
                     "litecoin to bitcoin.",
                     340.45,
                     R.mipmap.ltc,
                     R.mipmap.btc),
             new CryptoPair("litcoin / usd",
+                    "ltc/usd",
                     "litecoin to United States dollars.",
                     73.02,
                     R.mipmap.ltc,
                     R.mipmap.usd),
             new CryptoPair("litcoin / etharium",
+                    "ltc/eth",
                     "litecoin to etharium",
                     0.0234,
                     R.mipmap.ltc,
                     R.mipmap.eth),
             new CryptoPair("etharium / bitcoin",
-                    "litecoin to bitcoin.",
+                    "eth/btc",
+                    "etharium to bitcoin.",
                     0.3454,
                     R.mipmap.eth,
                     R.mipmap.btc),
             new CryptoPair("etharium / usd",
-                    "litecoin to United States dollars.",
+                    "eth/usd",
+                    "etharium to United States dollars.",
                     373.02,
                     R.mipmap.eth,
                     R.mipmap.usd),
             new CryptoPair("etharium / litcoin",
-                    "litecoin to etharium",
+                    "eth/ltc",
+                    "etharium to etharium",
                     0.5234,
                     R.mipmap.eth,
                     R.mipmap.ltc),
@@ -78,6 +89,5 @@ public class CryptoPair {
     public Double getCurrentExachage() { return currentExachage; }
     public int getImgResIdLeft() { return imgResIdLeft; }
     public int getImgResIdRight() { return imgResIdRight; }
-
-
+    public String getShortname() { return shortname; }
 }

@@ -1,11 +1,5 @@
 package gb.pavelkorzhenko.cryptostockviewer;
 
-/**
- * @done 2. Найти способ обработки метода startActivity() неявного Intent, который позволит не
- * @done    закрываться аварийно вашему приложению при отсутствии в системе Activity, имеющей нужный Action.
- * @see android.content.Intent.createChooser()
- */
-
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -18,7 +12,6 @@ import android.widget.TextView;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
-
 
 public class DetailActivity extends AppCompatActivity implements IConstants{
     protected TextView textViewData;
@@ -33,6 +26,8 @@ public class DetailActivity extends AppCompatActivity implements IConstants{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
+
+        CryptoDetailFragment cryptoDetailFrag = (CryptoDetailFragment) getSupportFragmentManager().findFragmentById(R.id.cryptoDetailFrameId);
 
         Intent getMainData = getIntent();
         cryptodata = getMainData.getStringExtra(CRYPTODATA);

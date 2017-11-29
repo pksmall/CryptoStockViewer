@@ -9,8 +9,7 @@
         android:roundIcon="@mipmap/btc_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".CryptoStockViewer"
-            android:screenOrientation="portrait">
+        <activity android:name=".CryptoStockViewer">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -18,8 +17,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".DetailActivity"
-            android:label="@string/detailactivity"
-            android:configChanges="orientation|screenSize">
+            android:label="@string/detailactivity">
         </activity>
     </application>
 
