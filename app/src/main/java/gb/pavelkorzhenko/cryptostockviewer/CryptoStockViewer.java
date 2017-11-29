@@ -195,7 +195,6 @@ public class CryptoStockViewer extends AppCompatActivity implements IConstants {
         ft.commit();
     }
 
-    // @done TODO
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

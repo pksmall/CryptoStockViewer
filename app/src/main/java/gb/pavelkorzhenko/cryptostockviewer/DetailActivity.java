@@ -13,6 +13,12 @@ import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 
+/*
+ *
+ * TODO: ошибка если остаемся на детальной информации и поварачиваем смартфон в ландскейп.
+ *
+ */
+
 public class DetailActivity extends AppCompatActivity implements IConstants{
     protected Button btnBack;
     protected String cryptodata;
